@@ -71,6 +71,7 @@ package id.ac.umn.modul1_1
 //}
 
 import android.os.Bundle
+import android.view.Display.Mode
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -88,6 +89,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.material3.Button
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 
 
 class MainActivity : ComponentActivity() {
@@ -120,6 +126,50 @@ class MainActivity : ComponentActivity() {
 //        )
 //    }
 //}
+@Composable
+fun MyApp(modifier: Modifier = Modifier) {
+
+    var shouldShowOnboarding by remember { mutableStateOf(true) }
+
+    Surface(modifier) {
+        if (shouldShowOnboarding) {
+            OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false })
+        } else {
+            Greetings()
+        }
+    }
+}
+
+@Composable
+fun OnboardingScreen(
+    onContinueClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+
+
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Welcome to the Basics Codelab!")
+        Button(
+            modifier = Modifier
+                .padding(vertical = 24.dp),
+            onClick = onContinueClicked
+        ) {
+            Text("Continue")
+        }
+    }
+
+}
+@Preview(showBackground = true, widthDp = 320, heightDp = 320)
+@Composable
+fun OnboardingPreview() {
+    Modul11Theme {
+        OnboardingScreen(onContinueClicked = {})
+    }
+}
 
 @Composable
 fun MyApp(
@@ -155,6 +205,33 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         }
     }
 }
+@Composable
+private fun Greetings(
+    modifier: Modifier = Modifier,
+    names: List<String> = listOf("World", "Compose")
+) {
+    Column(modifier = modifier.padding(vertical = 4.dp)) {
+        for (name in names) {
+            Greeting(name = name)
+        }
+    }
+}
+
+@Preview(showBackground = true, widthDp = 320)
+@Composable
+fun GreetingsPreview() {
+    Modul11Theme {
+        Greetings()
+    }
+}
+@Preview
+@Composable
+fun MyAppPreview() {
+    Modul11Theme {
+        MyApp(Modifier.fillMaxSize())
+    }
+}
+
 
 @Preview(showBackground = true, widthDp = 320)
 @Composable
